@@ -70,3 +70,12 @@ Changes for each version of the field pack.
 Version | Author | Comment
 --------|--------|--------
 1.0 | Hiko Davis | First bundled version of the field packs.
+
+## Support URL
+https://github.com/htdavis/ca-apm-fieldpack-epa-rabbitmq/issues
+
+## Short Description
+Monitor RabbitMQ
+
+## Categories
+Middleware/ESB
