@@ -1,5 +1,7 @@
 # EPAgent Plugins for RabbitMQ (1.0)
 
+#Description
+
 This is a series of plugins for monitoring RabbitMQ.
 
 RabbitMQ_Bindings.pl - gathers binding statistics.  
@@ -9,6 +11,7 @@ RabbitMQ_Exchanges.pl - gathers exchange statistics.
 RabbitMQ_Nodes.pl - gathers node statistics.  
 RabbitMQ_Queues.pl - gathers queue statistics.  
 
+# Dependencies
 Tested with CA APM 9.1.4.0 EM, EPAgent 9.1.4.0, RabbitMQ 3.3.0, Perl 5.10.1, and Python 2.7.6.
 
 ##Known Issues
