@@ -13,7 +13,6 @@ Tested with CA APM 9.1.4.0 EM, EPAgent 9.1.4.0, RabbitMQ 3.3.0, Perl 5.10.1, and
 
 ## Known Issues
 There are no known dependencies on the version of APM or Perl.
-There are issues related to newer versions of RabbitMQ. The TSV output has changed so a number of these plugins will needed adjusting depending on your version.
 
 It has been reported and verified that the output from newer versions of RabbitMQ has changed.  
 You will need to validate the new output against the ones used to create the plugins.
