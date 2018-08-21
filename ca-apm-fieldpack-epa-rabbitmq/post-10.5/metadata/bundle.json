@@ -1,0 +1,23 @@
+{
+  "name": "iagent-{os}-v1",
+  "addedBy": "John Smith",
+  "author": "John Smith",
+  "displayName": "RabbitMQ Bundle Extension for Infrastructure Agent",
+  "version": "1.0.0.0",
+  "facets": [],
+  "dependencies": [
+    "apmia"
+  ],
+  "enhances": [],
+  "excludes": [],
+  "compatibility": {
+    "osName": [
+        "windows",
+        "unix"
+    ],
+    "agentVersion": ">=10.6"
+  },
+  "specificationVersion": "2",
+  "type": "apmia",
+  "dynamic": false
+}

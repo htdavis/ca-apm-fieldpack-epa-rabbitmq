@@ -1,0 +1,8 @@
+# ignore Perl modules used during testing
+post-10.5/lib/perl/Wily/*.pm
+
+# ignore sample files
+samples/
+
+# ignore .includepath
+.includepath
