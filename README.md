@@ -1,4 +1,4 @@
-# EPAgent Plugins for RabbitMQ (1.0)
+# EPAgent Plugins for RabbitMQ (1.1)
 
 This is a series of plugins for monitoring RabbitMQ.
 
@@ -9,7 +9,7 @@ RabbitMQ_Exchanges.pl - gathers exchange statistics.
 RabbitMQ_Nodes.pl - gathers node statistics.  
 RabbitMQ_Queues.pl - gathers queue statistics.  
 
-Tested with CA APM 9.1.4.0 EM, EPAgent 9.1.4.0, RabbitMQ 3.3.0, Perl 5.10.1, and Python 2.7.6.
+Tested with CA APM 9.1+ EM, EPAgent 9.1+, Infrastructure Agent 10.7+, RabbitMQ 3.7.0, Perl 5.10.1 & higher, and Python 2.7.6.
 
 ## Known Issues
 There are no known dependencies on the version of APM or Perl.
@@ -70,3 +70,4 @@ Changes for each version of the field pack.
 Version | Author | Comment
 --------|--------|--------
 1.0 | Hiko Davis | First bundled version of the field packs.
+1.1 | Hiko Davis | Updated for RMQ 3.7.0
