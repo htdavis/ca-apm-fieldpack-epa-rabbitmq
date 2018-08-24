@@ -94,10 +94,10 @@ if ($debug) {
     # read in the test output file; adjust path as needed for your environment
     #@arrayResults = do { open my $fh, '<', File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "samples", "bindings.txt"); <$fh>; }
     # if you do not have File::Slurp installed, remove the "use" reference, comment out the next line, and uncommment the previous line
-    @arrayResults = read_file(File::Spec->catfile("samples", "bindings_37.txt"));
+    @arrayResults = read_file(File::Spec->catfile(abs_path, "../../samples", "bindings_37.txt"));
 } else {
     # determine path to rabbitmqadmin.py; adjust path as needed for your environment
-    $rabbitmqadmin = File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "rabbitmqadmin.py");
+    $rabbitmqadmin = File::Spec->catfile(abs_path, "data", "rabbitmqadmin.py");
     # command to execute rabbitmqadmin.py
     $execCommand="python $rabbitmqadmin --host=$rmqHost --port=$rmqPort --username=$rmqUser --password=$rmqPswd --format=tsv list bindings";
     # execute command, place results into array
@@ -105,39 +105,32 @@ if ($debug) {
 }
 
 
+# replace all double-tabs with single tab
+for (@arrayResults) {s/\t\t/\t/g}
+
 # skip first row; iterate through results
 for my $i ( 1..$#arrayResults ) {
     # removing trailing newline
     chomp $arrayResults[$i];
+    # removing trailing space
+    $arrayResults[$i] =~ s/\s+$//;
     # split on tab "\t"
     my @results = split('\t', $arrayResults[$i]);
+    # debug print the resulting array
+    print "results: @results\n" if $debug;
     # check @results for empty string & replace with "Unknown"
     foreach ( @results ) {
-        if ( length($_) == 0 ) { $_ = "Unknown"; }
+        if ( (length($_) == 0) ) { $_ = "Unknown"; }
+        if ( not defined $results[2]) { push @results, "Unknown"; }
     }
+    
+    # debug print the final resulting array after processing
+    print "results: @results\n" if $debug;
     # return results; use "source" & "destination" columns as subresource
-#    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-#                                    'resource'      =>  'RabbitMQ|Bindings',
-#                                    'subresource'   =>  $results[1] . " -> " . $results[2],
-#                                    'name'          =>  'vhost',
-#                                    'value'         =>  $results[0],
-#                                  );
-#    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-#                                    'resource'      =>  'RabbitMQ|Bindings',
-#                                    'subresource'   =>  $results[1] . " -> " . $results[2],
-#                                    'name'          =>  'destination_type',
-#                                    'value'         =>  $results[3],
-#                                  );
     Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
                                     'resource'      =>  'RabbitMQ|Bindings',
                                     'subresource'   =>  $results[0] . " -> " . $results[1],
                                     'name'          =>  'routing_key',
                                     'value'         =>  $results[2],
                                   );
-#    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-#                                    'resource'      =>  'RabbitMQ|Bindings',
-#                                    'subresource'   =>  $results[1] . " -> " . $results[2],
-#                                    'name'          =>  'properties_key',
-#                                    'value'         =>  $results[5],
-#                                  );
 }

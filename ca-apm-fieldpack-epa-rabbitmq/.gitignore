@@ -1,5 +1,6 @@
 # ignore Perl modules used during testing
 post-10.5/lib/perl/Wily/*.pm
+pre-10.5/epaplugins/lib/
 
 # ignore sample files
 samples/
