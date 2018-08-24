@@ -11,13 +11,13 @@ RabbitMQ_Queues.pl - gathers queue statistics.
 
 Tested with CA APM 9.1+ EM, EPAgent 9.1+, Infrastructure Agent 10.7, RabbitMQ 3.7.0, Perl 5.10.1, and Python 2.7.6.
 
-##Known Issues
+## Known Issues
 There are no known dependencies on the version of APM or Perl.
 
 It has been reported and verified that the output from newer versions of RabbitMQ has changed.  
 You will need to validate the new output against the ones used to create the plugins.
 
-#Licensing
+# Licensing
 FieldPacks are provided under the Apache License, version 2.0. See [Licensing](https://www.apache.org/licenses/LICENSE-2.0).
 
 
@@ -54,7 +54,7 @@ Place the file in the directory where your plugins are located.
 
 Start the EPAgent using the provided control script in &lt;epa_home&gt;/bin.  
 
-##How to create an ACC bundle for Infrastructure Agent (APMIA)
+## How to create an ACC bundle for Infrastructure Agent (APMIA)
 The files located in the 'post-10.5' folder are already preconfigured for creating a bundle. Place a copy of your CLI file _data_ folder.  
 Delete 'readme.txt' in this folder.   
 Obtain a copy of 'PrintMetric.pm' from your EPAgent archive and place in the 'lib/perl/Wily'.  
@@ -63,7 +63,7 @@ Update 'description.md' and 'bundle.json' in the _metadata_ folder.
 Create a ZIP file of the 'post-10.5' contents, ensuring you don't include the parent folder.  
 Upload the ZIP file to your ACC instance.
 
-##How to debug and troubleshoot the field pack
+## How to debug and troubleshoot the field pack
 Update the root logger in &lt;epa_home&gt;/IntroscopeEPAgent.properties from INFO to DEBUG, then save. No need to restart the JVM.
 You can also manually execute the plugins from a console and use perl's built-in debugger.
 
