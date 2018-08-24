@@ -94,10 +94,10 @@ if ($debug) {
     # read in the test output file; adjust path as needed for your environment
     #@arrayResults = do { open my $fh, '<', File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "samples", "queues.txt"); <$fh>; }
     # if you do not have File::Slurp installed, remove the "use" reference, comment out the next line, and uncommment the previous line
-    @arrayResults = read_file(File::Spec->catfile(abs_path, "samples", "queues.txt"));
+    @arrayResults = read_file(File::Spec->catfile(abs_path, "../../samples", "queues_37.txt"));
 } else {
     # determine path to rabbitmqadmin.py; adjust path as needed for your environment
-    $rabbitmqadmin = File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "rabbitmqadmin.py");
+    $rabbitmqadmin = File::Spec->catfile(abs_path, "data", "rabbitmqadmin.py");
     # command to execute rabbitmqadmin.py
     $execCommand="python $rabbitmqadmin --host=$rmqHost --port=$rmqPort --username=$rmqUser --password=$rmqPswd --format=tsv list queues";
     # execute command, place results into array
@@ -105,105 +105,26 @@ if ($debug) {
 }
 
 
+# replace all double-tabs with single tab
+for (@arrayResults) {s/\t\t/\t/g}
+
 # skip first row; iterate through results
 for my $i ( 1..$#arrayResults ) {
     # removing trailing newline
     chomp $arrayResults[$i];
+    # removing trailing space
+    $arrayResults[$i] =~ s/\s+$//;
     # split line on tab "\t"
     my @results = split('\t', $arrayResults[$i]);
     # check @results for empty string & replace with "Unknown"
-    foreach ( @results ) {
-        if ( length($_) == 0 ) { $_ = "Unknown"; }
-    }
+#    foreach ( @results ) {
+#        if ( length($_) == 0 ) { $_ = "Unknown"; }
+#    }
     # return results; use "name" column as subresource
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
+    Wily::PrintMetric::printMetric( 'type'          =>  'IntCounter',
                                     'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'vhost',
-                                    'value'         =>  $results[0],
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'auto_delete',
-                                    'value'         =>  $results[2],
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'LongCounter',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'consumer_utilisation',
-                                    'value'         =>  int($results[3]),
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'LongCounter',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'consumers',
-                                    'value'         =>  int($results[4]),
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'LongCounter',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'down_slave_nodes',
-                                    'value'         =>  int($results[5]),
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'durable',
-                                    'value'         =>  $results[6],
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'exclusive_consumer_tag',
-                                    'value'         =>  $results[7],
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'idle_since',
-                                    'value'         =>  $results[8],
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'LongCounter',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'memory (KB)',
-                                    'value'         =>  int($results[11]),
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'LongCounter',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
+                                    'subresource'   =>  $results[0],
                                     'name'          =>  'messages',
-                                    'value'         =>  int($results[15]),
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'LongCounter',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'messages_ready',
-                                    'value'         =>  int($results[18]),
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'LongCounter',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'messages_unacknowledged',
-                                    'value'         =>  int($results[20]),
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'node',
-                                    'value'         =>  $results[22],
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'policy',
-                                    'value'         =>  $results[23],
-                                    );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Queues',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'state',
-                                    'value'         =>  $results[24],
+                                    'value'         =>  $results[1],
                                     );
 }
