@@ -7,3 +7,6 @@ samples/
 
 # ignore .includepath
 .includepath
+
+# ignore GFM-generated HTML files
+*.htm*

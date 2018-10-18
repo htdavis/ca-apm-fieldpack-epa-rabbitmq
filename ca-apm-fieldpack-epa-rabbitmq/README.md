@@ -12,7 +12,16 @@ RabbitMQ_Queues.pl - gathers queue statistics.
 Tested with CA APM 9.1+ EM, EPAgent 9.1+, Infrastructure Agent 10.7, RabbitMQ 3.7.0, Perl 5.10.1, and Python 2.7.6.
 
 ## Known Issues
-There are no known dependencies on the version of APM or Perl.
+The plugins all use a CPAN module called File::Slurp. If this is not installed with your distro, or cannot install it, then locate the following two lines and comment them out:
+
+    use File::Slurp
+    @arrayResults = read_file(File::Spec->catfile  
+
+If you would like to install the module on CentOS/RHEL, use the following command:
+
+    [sudo] yum -y install perl-File-Slurp
+    
+If you are on Windows, use Strawberry Perl's CPAN client or ActivePerl's PPM client.
 
 It has been reported and verified that the output from newer versions of RabbitMQ has changed.  
 You will need to validate the new output against the ones used to create the plugins.
@@ -55,7 +64,7 @@ Place the file in the directory where your plugins are located.
 Start the EPAgent using the provided control script in &lt;epa_home&gt;/bin.  
 
 ## How to create an ACC bundle for Infrastructure Agent (APMIA)
-The files located in the 'post-10.5' folder are already preconfigured for creating a bundle. Place a copy of your CLI file _data_ folder.  
+The files located in the 'post-10.5' folder are already preconfigured for creating a bundle. Place a copy of your CLI file in the _data_ folder.  
 Delete 'readme.txt' in this folder.   
 Obtain a copy of 'PrintMetric.pm' from your EPAgent archive and place in the 'lib/perl/Wily'.  
 Delete 'readme.txt' in this folder.  
@@ -64,7 +73,7 @@ Create a ZIP file of the 'post-10.5' contents, ensuring you don't include the pa
 Upload the ZIP file to your ACC instance.
 
 ## How to debug and troubleshoot the field pack
-Update the root logger in &lt;epa_home&gt;/IntroscopeEPAgent.properties from INFO to DEBUG, then save. No need to restart the JVM.
+Update the root logger in IntroscopeEPAgent.properties/IntroscopeAgent.profile from INFO to DEBUG, then save. No need to restart the JVM.
 You can also manually execute the plugins from a console and use perl's built-in debugger.
 
 Carefully read each plugin's POD section for details on how to run the plugins in debug mode. If you are using a newer version than what was tested, it's more than likely that the vendor has increased/decreased the number of columns in the TSV output. It will be apparent when you compare the output to the program. Adjust the program accordingly.
