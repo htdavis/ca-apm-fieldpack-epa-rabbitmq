@@ -1,4 +1,4 @@
-# EPAgent Plugins for RabbitMQ (1.1)
+# EPAgent Plugins for RabbitMQ (1.2)
 
 This is a series of plugins for monitoring RabbitMQ.
 
