@@ -9,13 +9,14 @@ RabbitMQ_Exchanges.pl - gathers exchange statistics.
 RabbitMQ_Nodes.pl - gathers node statistics.  
 RabbitMQ_Queues.pl - gathers queue statistics.  
 
-Tested with CA APM 9.1+ EM, EPAgent 9.1+, Infrastructure Agent 10.7, RabbitMQ 3.7.0, Perl 5.10.1, and Python 2.7.6.
+Tested with CA APM 9.1+ EM, EPAgent 9.1+, Infrastructure Agent 10.7, RabbitMQ 3.7.0, Perl 5.10.1, and Python 2.7.6.  
+All currently supported versions of CA APM and Perl will work. Check with [RabbitMQ](http://www.rabbitmq.com/management-cli.html) on compatible Python versions.
 
 ## Known Issues
-The plugins all use a CPAN module called File::Slurp. If this is not installed with your distro, or cannot install it, then locate the following two lines and comment them out:
+The plugins make use of a CPAN module called File::Slurp. If this is not installed with your distro, or cannot install it, then locate the following two lines and comment them out:
 
-    use File::Slurp
-    @arrayResults = read_file(File::Spec->catfile  
+    use File::Slurp;
+    @arrayResults = read_file(...);  
 
 If you would like to install the module on CentOS/RHEL, use the following command:
 
@@ -52,10 +53,13 @@ Add stateless plugin entries to &lt;epa_home&gt;/IntroscopeEPAgent.properties.
 
 Follow these instructions to deploy the plugins to APMIA without an ACC bundle:
 
-Create a subfolder and copy in the contents of _post-10.5_ to &lt;apmia_home&gt;/extensions.  
+Create a subfolder called _RabbitMQMonitor_ and copy in the contents of _post-10.5_ to &lt;apmia_home&gt;/extensions.  
 Edit &lt;apmia_home&gt;/extensions/Extensions.profile  
-* Add your extension to the list in property  
-introscope.agent.extensions.bundles.boot.load
+* Add your extension folder name to the list in property  
+
+    introscope.agent.extensions.bundles.boot.load
+    
+In either setups, ensure Perl and Python are listed in your system path!
 	
 # Usage Instructions
 Follow the instructions to download a copy of the Management Commandline Tool, [rabbitmqadmin.py](https://www.rabbitmq.com/management-cli.html).  
@@ -71,6 +75,7 @@ Delete 'readme.txt' in this folder.
 Update 'description.md' and 'bundle.json' in the _metadata_ folder.  
 Create a ZIP file of the 'post-10.5' contents, ensuring you don't include the parent folder.  
 Upload the ZIP file to your ACC instance.
+Once you have selected the bundle to add to your agent package, modify the bundle properties so that you're providing the host, port, username, and password to your RabbitMQ instance(s).
 
 ## How to debug and troubleshoot the field pack
 Update the root logger in IntroscopeEPAgent.properties/IntroscopeAgent.profile from INFO to DEBUG, then save. No need to restart the JVM.
@@ -110,3 +115,4 @@ Version | Author | Comment
 --------|--------|--------
 1.0 | Hiko Davis | First bundled version of the field packs.
 1.1 | Hiko Davis | Updated for 3.7.0
+1.2 | Hiko Davis | Updated content and fixed path issue.

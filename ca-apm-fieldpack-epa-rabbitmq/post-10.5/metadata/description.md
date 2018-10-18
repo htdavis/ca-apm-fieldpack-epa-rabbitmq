@@ -1,1 +1,1 @@
-This is an example EPAgent plug-in bundle for CA APM Infrastructure Agent.
+RabbitMQ Monitor plug-in bundle for CA APM Infrastructure Agent.

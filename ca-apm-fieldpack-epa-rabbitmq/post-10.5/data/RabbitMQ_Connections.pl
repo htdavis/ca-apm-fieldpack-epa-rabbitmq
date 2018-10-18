@@ -96,7 +96,7 @@ if ($debug) {
     @arrayResults = read_file(File::Spec->catfile(abs_path, "../../samples", "connections_37.txt"));
 } else {
     # determine path to rabbitmqadmin.py; adjust path as needed for your environment
-    $rabbitmqadmin = File::Spec->catfile(abs_path, "data", "rabbitmqadmin.py");
+    $rabbitmqadmin = File::Spec->catfile(abs_path("rabbitmqadmin.py"));
     # command to execute rabbitmqadmin.py
     $execCommand="python $rabbitmqadmin --host=$rmqHost --port=$rmqPort --username=$rmqUser --password=$rmqPswd --format=tsv list connections";
     # execute command, place results into array
