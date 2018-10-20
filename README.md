@@ -14,6 +14,8 @@ Monitor RabbitMQ
 
 ## Categories
 Middleware/ESB
-=======
-1.1 | Hiko Davis | Updated for RMQ 3.7.0
+
+Version | Author | Comment
+--------|--------|--------
+1.1 | Hiko Davis | Updated for RMQ 3.7.0  
 1.2 | Hiko Davis | Update content and disabled unused modules.
