@@ -1,4 +1,4 @@
-# EPAgent Plugins for RabbitMQ (1.2)
+# EPAgent/APMIA Plugins for RabbitMQ (1.2)
 
 This is a series of plugins for monitoring RabbitMQ.
 
@@ -13,19 +13,22 @@ Tested with CA APM 9.1+ EM, EPAgent 9.1+, Infrastructure Agent 10.7, RabbitMQ 3.
 All currently supported versions of CA APM and Perl will work. Check with [RabbitMQ](http://www.rabbitmq.com/management-cli.html) on compatible Python versions.
 
 ## Known Issues
-The plugins make use of a CPAN module called File::Slurp. If this is not installed with your distro, or cannot install it, then locate the following two lines and comment them out:
+The plugins make use of a CPAN module called File::Slurp in debug mode. If this is not available in your distro and would like to use it, do the following in each plugin:
 
-    use File::Slurp;
-    @arrayResults = read_file(...);  
+    use File::Slurp; (uncomment)
+    @arrayResults = read_file(...); (uncomment)
+    #@arrayResults = do {...}; (comment)
 
-If you would like to install the module on CentOS/RHEL, use the following command:
+To install the module, use one of the following commands:
 
-    [sudo] yum -y install perl-File-Slurp
-    
-If you are on Windows, use Strawberry Perl's CPAN client or ActivePerl's PPM client.
+    [sudo] yum install perl-File-Slurp (CentOS/RHEL)
+    [sudo] apt install libperl-File-Slurp (Debian/Ubuntu)
+    [sudo] cpan install File::Slurp (CPAN)
+    [sudo] ppm install File-Slurp (ActivePerl PPM)
 
 It has been reported and verified that the output from newer versions of RabbitMQ has changed.  
-You will need to validate the new output against the ones used to create the plugins.
+You will need to validate the new output against the ones used to create the plugins.  
+If you are not comfortable with editing Perl code, please open an issue using the Support URL below.
 
 # Licensing
 FieldPacks are provided under the Apache License, version 2.0. See [Licensing](https://www.apache.org/licenses/LICENSE-2.0).
@@ -33,7 +36,8 @@ FieldPacks are provided under the Apache License, version 2.0. See [Licensing](h
 
 # Installation Instructions
 
-Follow the instructions in the EPAgent guide to setup the agent.
+## EPAgent instructions
+Copy the contents of _pre-10.5_ to &lt;epa_home&gt;.
 
 Add stateless plugin entries to &lt;epa_home&gt;/IntroscopeEPAgent.properties.
 
@@ -51,31 +55,37 @@ Add stateless plugin entries to &lt;epa_home&gt;/IntroscopeEPAgent.properties.
 	introscope.epagent.stateless.QUEUES.command=perl <epa_home>/epaplugins/rabbitmq/RabbitMQ_Queues.pl --host=HOST_OR_IP_ADDR --port=12345 --user=USERNAME --pswd=PASSWORD
 	introscope.epagent.stateless.QUEUES.delayInSeconds=900
 
-Follow these instructions to deploy the plugins to APMIA without an ACC bundle:
-
-Create a subfolder called _RabbitMQMonitor_ and copy in the contents of _post-10.5_ to &lt;apmia_home&gt;/extensions.  
-Edit &lt;apmia_home&gt;/extensions/Extensions.profile  
-* Add your extension folder name to the list in property  
+## APMIA instructions (without ACC bundle)
+* Create a subdirectory called _RabbitMQMonitor_ and copy in the contents of _post-10.5_ to &lt;apmia_home&gt;/extensions.  
+* Edit &lt;apmia_home&gt;/extensions/Extensions.profile  
+* Add your extension directory name to the list in property  
 
     introscope.agent.extensions.bundles.boot.load
     
-In either setups, ensure Perl and Python are listed in your system path!
+* Edit bundle.properties and update the RMQ host, port, username, and password
+
+## APMIA instructions (with ACC bundle)
+* Export the bundle using the Bundle URL in ACC.
+* Copy the GZIP to &lt;apmia_home&gt;/extensions/deploy.  
+
+_N.B._: No changes are necessary to Extensions.profile since the edits were done in ACC.
+
+In either setups, ensure Perl and Python are listed in your system path!  
+Restart the agent to complete the installation.
 	
 # Usage Instructions
 Follow the instructions to download a copy of the Management Commandline Tool, [rabbitmqadmin.py](https://www.rabbitmq.com/management-cli.html).  
 Place the file in the directory where your plugins are located.  
 
-Start the EPAgent using the provided control script in &lt;epa_home&gt;/bin.  
-
 ## How to create an ACC bundle for Infrastructure Agent (APMIA)
-The files located in the 'post-10.5' folder are already preconfigured for creating a bundle. Place a copy of your CLI file in the _data_ folder.  
+* The files located in the 'post-10.5' folder are already preconfigured for creating a bundle. Place a copy of your CLI file in the _data_ folder.  
 Delete 'readme.txt' in this folder.   
-Obtain a copy of 'PrintMetric.pm' from your EPAgent archive and place in the 'lib/perl/Wily'.  
+* Obtain a copy of 'PrintMetric.pm' from your EPAgent archive and place in the 'lib/perl/Wily'.  
 Delete 'readme.txt' in this folder.  
-Update 'description.md' and 'bundle.json' in the _metadata_ folder.  
-Create a ZIP file of the 'post-10.5' contents, ensuring you don't include the parent folder.  
-Upload the ZIP file to your ACC instance.
-Once you have selected the bundle to add to your agent package, modify the bundle properties so that you're providing the host, port, username, and password to your RabbitMQ instance(s).
+* Update 'description.md' and 'bundle.json' in the _metadata_ folder.  
+* Create a ZIP file of the 'post-10.5' contents, ensuring you don't include the parent folder.  
+* Upload the ZIP file to your ACC instance.
+* Once you have selected the bundle to add to your agent package, modify the bundle properties so that you're providing the host, port, username, and password to your RabbitMQ instance(s).
 
 ## How to debug and troubleshoot the field pack
 Update the root logger in IntroscopeEPAgent.properties/IntroscopeAgent.profile from INFO to DEBUG, then save. No need to restart the JVM.

@@ -1,6 +1,6 @@
-### EPAgent Plug-in Bundle for Infrastructure Agent
+### RabbitMQ Monitor Bundle for Infrastructure Agent
 
-## ACC Installation
+#### ACC Installation
 
 New agent package:
 
@@ -10,11 +10,11 @@ New agent package:
 
 * Choose this bundle to be included your new package
 
+* Replace the parameters for each plug-in in the bundle properties
+
 * Save your package
 
-* Download your agent package archive
-
-* Follow the instructions in the [wiki](https://docops.ca.com) to configure and start the agent as a service
+* Follow the instructions in the [wiki](https://docops.ca.com) to deploy, configure, and start the agent as a service
 
 
 Adding bundle to an existing package:
@@ -23,9 +23,11 @@ Adding bundle to an existing package:
 
 * Add this bundle to your package
 
+* Replace the parameters for each plug-in in the bundle properties
+
 * Save your package
 
-* Deploy the updated package using the ACC Console or via API
+* Follow the instructions in the [wiki](https://docops.ca.com) to deploy the updated package using the ACC Console or via API
 
 
 Updating bundle in an existing package:
@@ -38,17 +40,17 @@ Updating bundle in an existing package:
 
 * Save your package
 
-* Deploy the updated package using the ACC Console or via API
+* Follow the instructions in the [wiki](https://docops.ca.com) to deploy the updated package using the ACC Console or via API
 
 
-## Non-ACC Installation
+#### Non-ACC Installation with ACC bundle
 
 * Download a compatible archive of the Infrastructure Agent from [CA Support](https://support.ca.com)
 
-* Extract the archive to your target server
+* Download the bundle from ACC using the Bundle URL
 
-* Copy the bundle archive to _{ApmExtensionHome}/_
+* Extract the agent archive to your target server
 
-* Add Your bundle directory name to _{ApmExtensionHome}/Extensions.profile_
+* Copy the bundle archive to _{ApmExtensionHome}/deploy_
 
 * Follow the instructions in the [wiki](https://docops.ca.com) to configure and start the agent as a service

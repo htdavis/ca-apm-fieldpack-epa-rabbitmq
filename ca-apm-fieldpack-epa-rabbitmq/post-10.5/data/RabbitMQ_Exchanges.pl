@@ -56,7 +56,7 @@ use Wily::PrintMetric;
 use Getopt::Long;
 use File::Spec;
 use Cwd qw(abs_path);
-use File::Slurp qw(read_file);
+#use File::Slurp qw(read_file);
 
 
 =head2 SUBROUTINES
@@ -94,7 +94,7 @@ if ($debug) {
     # read in the test output file; adjust path as needed for your environment
     #@arrayResults = do { open my $fh, '<', File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "samples", "exchanges.txt"); <$fh>; }
     # if you do not have File::Slurp installed, remove the "use" reference, comment out the next line, and uncommment the previous line
-    @arrayResults = read_file(File::Spec->catfile(abs_path, "../../samples", "exchanges_37.txt"));
+    #@arrayResults = read_file(File::Spec->catfile(abs_path, "../../samples", "exchanges_37.txt"));
 } else {
     # determine path to rabbitmqadmin.py; adjust path as needed for your environment
     $rabbitmqadmin = File::Spec->catfile(abs_path("rabbitmqadmin.py"));

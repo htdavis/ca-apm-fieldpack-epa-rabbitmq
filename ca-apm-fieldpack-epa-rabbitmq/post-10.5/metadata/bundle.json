@@ -1,9 +1,9 @@
 {
-  "name": "iagent-{os}-v1",
-  "addedBy": "John Smith",
-  "author": "John Smith",
-  "displayName": "RabbitMQ Bundle Extension for Infrastructure Agent",
-  "version": "1.0.0.0",
+  "name": "RabbitMQMonitor",
+  "addedBy": "APM SWAT",
+  "author": "APM SWAT",
+  "displayName": "RabbitMQ Monitor",
+  "version": "1.2.0.0",
   "facets": [],
   "dependencies": [
     "apmia"
