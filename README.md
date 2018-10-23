@@ -2,7 +2,7 @@
 
 This is a series of plugins for monitoring RabbitMQ broker.
 
-Please review the project README for details.
+Please review the project [README](ca-apm-fieldpack-epa-rabbitmq/README.md) for details.
 
 
 
@@ -17,5 +17,5 @@ Middleware/ESB
 
 Version | Author | Comment
 --------|--------|--------
-1.1 | Hiko Davis | Updated for RMQ 3.7.0  
+1.1 | Hiko Davis | Updated for RMQ 3.7.0
 1.2 | Hiko Davis | Update content and disabled unused modules.
