@@ -1,0 +1,1 @@
+RabbitMQ Monitor plug-in bundle for CA APM Infrastructure Agent.

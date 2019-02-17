@@ -56,7 +56,7 @@ use Wily::PrintMetric;
 use Getopt::Long;
 use File::Spec;
 use Cwd qw(abs_path);
-use File::Slurp qw(read_file);
+#use File::Slurp qw(read_file);
 
 
 =head2 SUBROUTINES
@@ -94,15 +94,19 @@ if ($debug) {
     # read in the test output file; adjust path as needed for your environment
     #@arrayResults = do { open my $fh, '<', File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "samples", "exchanges.txt"); <$fh>; }
     # if you do not have File::Slurp installed, remove the "use" reference, comment out the next line, and uncommment the previous line
-    @arrayResults = read_file(File::Spec->catfile("samples", "exchanges.txt"));
+    #@arrayResults = read_file(File::Spec->catfile(abs_path, "../../samples", "exchanges_37.txt"));
 } else {
     # determine path to rabbitmqadmin.py; adjust path as needed for your environment
-    $rabbitmqadmin = File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "rabbitmqadmin.py");
+    $rabbitmqadmin = File::Spec->catfile(abs_path("rabbitmqadmin.py"));
     # command to execute rabbitmqadmin.py
     $execCommand="python $rabbitmqadmin --host=$rmqHost --port=$rmqPort --username=$rmqUser --password=$rmqPswd --format=tsv list exchanges";
     # execute command, place results into array
     @arrayResults=`$execCommand`;
 }
+
+
+# replace all double-tabs with single tab
+for (@arrayResults) {s/\t\t/\t/g}
 
 # skip first row; iterate through results
 for my $i ( 1..$#arrayResults ) {
@@ -117,38 +121,8 @@ for my $i ( 1..$#arrayResults ) {
     # return results; use "name" column as subresource
     Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
                                     'resource'      =>  'RabbitMQ|Exchanges',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'vhost',
-                                    'value'         =>  $results[0],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Exchanges',
-                                    'subresource'   =>  $results[1],
+                                    'subresource'   =>  $results[0],
                                     'name'          =>  'type',
-                                    'value'         =>  $results[2],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Exchanges',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'auto_delete',
-                                    'value'         =>  $results[3],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Exchanges',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'durable',
-                                    'value'         =>  $results[4],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Exchanges',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'internal',
-                                    'value'         =>  $results[5],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Exchanges',
-                                    'subresource'   =>  $results[1],
-                                    'name'          =>  'policy',
-                                    'value'         =>  $results[6],
+                                    'value'         =>  $results[1],
                                   );
 }

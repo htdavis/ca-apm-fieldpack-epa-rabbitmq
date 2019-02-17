@@ -1,0 +1,23 @@
+{
+  "name": "RabbitMQMonitor",
+  "addedBy": "APM SWAT",
+  "author": "APM SWAT",
+  "displayName": "RabbitMQ Monitor",
+  "version": "1.2.0.0",
+  "facets": [],
+  "dependencies": [
+    "apmia"
+  ],
+  "enhances": [],
+  "excludes": [],
+  "compatibility": {
+    "osName": [
+        "windows",
+        "unix"
+    ],
+    "agentVersion": ">=10.6"
+  },
+  "specificationVersion": "2",
+  "type": "apmia",
+  "dynamic": false
+}

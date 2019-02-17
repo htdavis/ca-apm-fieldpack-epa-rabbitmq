@@ -2,29 +2,29 @@
 
 =head1 NAME
 
- RabbitMQ_Bindings.pl
+ RabbitMQ_Channels.pl
 
 =head1 SYNOPSIS
 
  IntroscopeEPAgent.properties configuration
 
- introscope.epagent.plugins.stateless.names=BINDINGS
- introscope.epagent.stateless.BINDINGS.command=perl <epa_home>/epaplugins/rabbitmq/RabbitMQ_Bindings.pl --host=HOST_OR_IP_ADDR --port=12345 --user=USERNAME --pswd=PASSWORD
- introscope.epagent.stateless.BINDINGS.delayInSeconds=15
+ introscope.epagent.plugins.stateless.names=CHANNELS
+ introscope.epagent.stateless.CHANNELS.command=perl <epa_home>/epaplugins/rabbitmq/RabbitMQ_Channels.pl --host=HOST_OR_IP_ADDR --port=12345 --user=USERNAME --pswd=PASSWORD
+ introscope.epagent.stateless.CHANNELS.delayInSeconds=15
 
 =head1 DESCRIPTION
 
- Pulls statistics about bindings
+ Pulls statistics about channels
 
  To see help information:
 
- perl <epa_home>/epaplugins/rabbitmq/RabbitMQ_Bindings.pl --help
+ perl <epa_home>/epaplugins/rabbitmq/RabbitMQ_Channels.pl --help
 
  or run with no commandline arguments.
 
  To test against sample output, use the DEBUG flag:
 
- perl <epa_home>/epaplugins/rabbitmq/RabbitMQ_Bindings.pl --debug
+ perl <epa_home>/epaplugins/rabbitmq/RabbitMQ_Channels.pl --debug
 
 =head1 CAVEATS
 
@@ -92,52 +92,45 @@ my (@arrayResults, $execCommand, $rabbitmqadmin);
 
 if ($debug) {
     # read in the test output file; adjust path as needed for your environment
-    #@arrayResults = do { open my $fh, '<', File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "samples", "bindings.txt"); <$fh>; }
+    #@arrayResults = do { open my $fh, '<', File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "samples", "channels.txt"); <$fh>; }
     # if you do not have File::Slurp installed, remove the "use" reference, comment out the next line, and uncommment the previous line
-    @arrayResults = read_file(File::Spec->catfile("samples", "bindings.txt"));
+    @arrayResults = read_file(File::Spec->catfile(abs_path, "../../../samples", "channels_37.txt"));
 } else {
     # determine path to rabbitmqadmin.py; adjust path as needed for your environment
-    $rabbitmqadmin = File::Spec->catfile(abs_path, "epaplugins", "RabbitMQ", "rabbitmqadmin.py");
+    $rabbitmqadmin = File::Spec->catfile(abs_path("rabbitmqadmin.py"));
     # command to execute rabbitmqadmin.py
-    $execCommand="python $rabbitmqadmin --host=$rmqHost --port=$rmqPort --username=$rmqUser --password=$rmqPswd --format=tsv list bindings";
+    $execCommand="python $rabbitmqadmin --host=$rmqHost --port=$rmqPort --username=$rmqUser --password=$rmqPswd --format=tsv list channels";
     # execute command, place results into array
     @arrayResults=`$execCommand`;
 }
 
 
+# replace all double-tabs with single tab
+for (@arrayResults) {s/\t\t/\t/g}
+
 # skip first row; iterate through results
 for my $i ( 1..$#arrayResults ) {
     # removing trailing newline
     chomp $arrayResults[$i];
+    # removing trailing space
+    $arrayResults[$i] =~ s/\s+$//;
     # split on tab "\t"
     my @results = split('\t', $arrayResults[$i]);
+    # debug print the resulting array
+    print "results: @results\n" if $debug;
     # check @results for empty string & replace with "Unknown"
     foreach ( @results ) {
         if ( length($_) == 0 ) { $_ = "Unknown"; }
     }
-    # return results; use "source" & "destination" columns as subresource
+    # debug print the final resulting array after processing
+    print "results: @results\n" if $debug;
+    print "subresource: $results[0]\n" if $debug;
+    print "value: $results[1]\n" if $debug;
+    # return results; use "name" column as subresource
     Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Bindings',
-                                    'subresource'   =>  $results[1] . " -> " . $results[2],
-                                    'name'          =>  'vhost',
-                                    'value'         =>  $results[0],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Bindings',
-                                    'subresource'   =>  $results[1] . " -> " . $results[2],
-                                    'name'          =>  'destination_type',
-                                    'value'         =>  $results[3],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Bindings',
-                                    'subresource'   =>  $results[1] . " -> " . $results[2],
-                                    'name'          =>  'routing_key',
-                                    'value'         =>  $results[4],
-                                  );
-    Wily::PrintMetric::printMetric( 'type'          =>  'StringEvent',
-                                    'resource'      =>  'RabbitMQ|Bindings',
-                                    'subresource'   =>  $results[1] . " -> " . $results[2],
-                                    'name'          =>  'properties_key',
-                                    'value'         =>  $results[5],
+                                    'resource'      =>  'RabbitMQ|Channels',
+                                    'subresource'   =>  $results[0],
+                                    'name'          =>  'user',
+                                    'value'         =>  $results[1],
                                   );
 }
